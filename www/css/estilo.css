@@ -1,0 +1,26 @@
+.divisor {
+    width: 1px;
+    height: 16px;
+    margin: 17px 10px;
+    background-color: gray;
+}
+
+.capa {
+    display: table;
+    width: 100%;
+}
+
+.texto-capa {
+    padding-top: 150px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.integrantes {
+    padding-top: 100px;
+    padding-left: 100px;
+    align-items: center;
+    display: table;
+    vertical-align: middle;
+}
