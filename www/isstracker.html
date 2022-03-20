@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>ISS Tracker</title>
+    </head>
+
+    <body>
+        <ul id="teste"></ul>
+        <p style="position: absolute;">estação</p>
+        <div>
+            <div id="googleMap" style="width:100%;height:800px;"></div>
+        </div>
+
+        <div>
+            <label>Ponto no solo</label>
+            <label>Latitude: <span id="lblLatitude"></span></label>
+            <label>Longitude: <span id="lblLongitude"></span></label>
+
+            <label>Altitude: <span id="lblAltitude"></span> km</label>
+            <label>Velocidade orbital: <span id="lblVelocidade"></span> km/h</label>
+            <input type="datetime-local" id="txtDatetime" name="txtDatetime" onchange="setDatetime(this.value)">
+            <button id="btnCustomTimestamp" style="width: 75px; height: 20px;" onclick="mapaCustomTimestamp()">Mapa Custom</button>
+            <button id="btnCurrentTimestamp" style="width: 75px; height: 20px;" onclick="mapaAtual();">Mapa tempo real</button>
+            <p id="lblAviso"></p>
+        </div>
+    </body>
+
+</html>
+
+<script>
+    let image = 'a.jpg'; // Path para o ícone da ISS
+    let map;             // Variável que configura o mapa da API do google maps
+    let issIcone;        // Variável que configura o ícone que sobrepõe o mapa na API do google maps
+    let timer;           // Variável que configura o timer (setInterval);
+    let timestamp;       // Variável que configura o timestamp que o usuário pode inserir
+
+    /*Variáveis de referência para os elementos HTML*/
+    let lblLatitude = document.getElementById("lblLatitude");
+    let lblLongitude = document.getElementById("lblLongitude");
+    let lblAltitude = document.getElementById("lblAltitude");
+    let lblVelocidade = document.getElementById("lblVelocidade");
+    let btnCurrentTimestamp = document.getElementById("btnCurrentTimestamp");
+    let btnCustomTimestamp = document.getElementById("btnCustomTimestamp");
+    let lblAviso = document.getElementById("lblAviso");
+
+    /* Ativa ou desativa o timer que atualizará a posição da estação espacial
+    em tempo real a cada 1 segundo.
+    Parâmetro: booleano (bool): True para ativar, False para desativar.*/
+    function setTimer(booleano) {
+        if(booleano){
+            timer = setInterval(function() { getCurrentIssPosition(); }, 1000);
+            btnCurrentTimestamp.disabled = true;
+        }
+        else{
+            clearInterval(timer);
+            btnCurrentTimestamp.disabled = false;
+        }
+    }
+
+    /*Seta uma nova coordenada (latitude e longitude), movendo a câmera do mapa para essa
+    coordenada, junto ao ícone da ISS também */
+    function setCoordenadaMapa(latitude, longitude) {
+        var novaCoordenada = new google.maps.LatLng(Number(latitude), Number(longitude));
+        map.panTo(novaCoordenada)
+        issIcone.setPosition(novaCoordenada)
+    }
+
+    /*Seta os elementos visuais da página para informar os dados de latitude, longitude,
+    altitude e velocidade */
+    function setLabels(latitude, longitude, altitude, velocidade) {
+        lblLatitude.textContent = latitude;
+        lblLongitude.textContent = longitude;
+        lblAltitude.textContent = altitude;
+        lblVelocidade.textContent = velocidade;
+    }
+
+    /*Função para onChange do datepicker da página, usado para converter um datetime para timestamp
+    e associar o seu valor na variável timestamp*/
+    function setDatetime(datetime) {
+        console.log(datetime)
+        const str_datetime = datetime.toString();
+        console.log(str_datetime.substring(5, 7))
+        if(Number(str_datetime.substring(0, 4)) < 1945 || Number(str_datetime.substring(0, 4)) > 3000)
+            lblAviso.textContent = "O ano inserido no datepicker é inválido.";
+        else 
+            lblAviso.textContent = "";
+        const dt = new Date(datetime).getTime();
+        timestamp = dt/1000;
+    }
+
+    /*Configura o mapa para receber os valores de posição da estação espacial em tempo real*/
+    function mapaAtual() {
+        setTimer(true);
+        var coordenadaInicial = new google.maps.LatLng(0, 0)
+        var mapProp= {
+            center:coordenadaInicial,
+            zoom:4,
+        };
+        map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+        issIcone = new google.maps.Marker({
+            position: coordenadaInicial,
+            map: map,
+            icon: image
+        });
+
+        getCurrentIssPosition();
+    }
+
+    /*Configura o mapa para receber os valores de posição de um timestamp customizado.
+    Esse mapa é estático, diferentemente do mapa em tempo real que acompanha a posição
+    da ISS a cada segundo.*/
+    function mapaCustomTimestamp() {
+        setTimer(false);
+        var coordenadaInicial = new google.maps.LatLng(0, 0)
+        var mapProp= {
+            center: coordenadaInicial,
+            zoom:4,
+        };
+        map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+        issIcone = new google.maps.Marker({
+            position: coordenadaInicial,
+            map: map,
+            icon: image
+        });
+        
+        if(timestamp != undefined || timestamp != null)
+            getIssPosisionCustomTimestamp(timestamp);
+        else
+            lblAviso.textContent = "Datetime inválido!"
+    }
+
+    /*Chamada da API wheretheiss na posição atual*/
+    const getCurrentIssPosition = async () => {
+        const response = await fetch("https://api.wheretheiss.at/v1/satellites/25544"); // Chama a API wheretheiss para obter sua posição atual, setando os valores na página e no mapa.
+        let issJson = await response.json();
+        setCoordenadaMapa(issJson.latitude, issJson.longitude);
+        setLabels(issJson.latitude, issJson.longitude, issJson.altitude, issJson.velocity);
+    }
+
+    /*Chamada da API wheretheiss na posição de algum timestamp personalizado*/
+    const getIssPosisionCustomTimestamp = async (customTimestamp) => {
+        const res = await fetch(`https://api.wheretheiss.at/v1/satellites/25544/positions?timestamps=${customTimestamp}&units=kilometers`); // Chama a API wheretheiss para obter sua posição com timestamp customizado, setando os valores na página e no mapa.
+        let issJson = await res.json();
+        setCoordenadaMapa(issJson[0].latitude, issJson[0].longitude);
+        setLabels(issJson[0].latitude, issJson[0].longitude, issJson[0].altitude, issJson[0].velocity);
+    }
+
+</script>
+
+<!-- Chamada da API do Google Maps para desenhar um mapa na página HTML. -->
+<script src="https://maps.googleapis.com/maps/api/js?key=&callback=mapaAtual"></script>
