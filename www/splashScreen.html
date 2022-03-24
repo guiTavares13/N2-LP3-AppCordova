@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+  <head>
+    <title>Título da página</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/splashScreen.css">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+  </head>
+  <body onload="displaypage()">
+
+    <script type="text/javascript">
+
+        function displaypage() {
+                var exibeGif=setTimeout("displayDiv()",0);// it will Delay for 3 seconds
+            }
+
+        function displayDiv() {
+            document.getElementById("splash-gif");
+
+            var telaInicial = setTimeout("changeScreen()", 3000);
+        }
+
+        function changeScreen(){
+            setTimeout(() => {
+                window.DelayNode()
+            }, 6000);
+            window.location.href = 'index.html';
+        }
+
+    </script>
+
+
+    <div id="splash-gif" class="imagem">
+        <img src="img/rocket-splash-screen.gif" alt="Gif splashScreen">
+    </div>   
+    
+    <div id="changeScreen" href="index.html">
+        
+    </div>  
+  </body>
+</html>

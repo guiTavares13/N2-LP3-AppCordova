@@ -1,26 +1,93 @@
-.divisor {
-    width: 1px;
-    height: 16px;
-    margin: 17px 10px;
-    background-color: gray;
+
+body {
+    background-color: rgb(35, 77, 103);
 }
 
-.capa {
-    display: table;
-    width: 100%;
+#icon-animacao {
+    margin: auto;
+    display: flex;
+    display: block;
+    padding-top: 300px;
+    justify-content: center;
+    width: 200px;
+    height: 375px;
+    animation-name: animacao-icone;
+    animation-delay: 3;
+    animation-duration: 5s;
 }
 
 .texto-capa {
-    padding-top: 150px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    color: rgb(255, 167, 38);
+}
+
+.subtitulo{
+    color: aliceblue;
     text-align: center;
     display: table-cell;
     vertical-align: middle;
 }
 
-.integrantes {
-    padding-top: 100px;
-    padding-left: 100px;
-    align-items: center;
+@keyframes animacao-titulo {
+    from {top: 700px}
+    to {top: 150px}
+}
+
+@keyframes animacao-subtitulo {
+    from {top: 600px}
+    to {top: 200px}
+}
+
+@keyframes animacao-icone {
+    from {animation-delay: 6; opacity: 0}
+    to {opacity: 1;}
+}
+
+@keyframes animacao-button {
+    from {animation-delay: 6; opacity: 0}
+    to {opacity: 1;}
+}
+
+#home-animacao {
     display: table;
-    vertical-align: middle;
+    position: absolute;
+    top: 150px;
+    width: 100%;
+    background-color: rgb(35, 77, 103);
+   
+    animation-name: animacao-titulo;
+    animation-duration: 2s;
+}
+
+#subtitulo-animacao {
+    display: table;
+    position: absolute;
+    top: 200px;
+    width: 100%;
+    animation-name: animacao-subtitulo;
+    animation-duration: 4s;
+}
+
+#button-initial {
+    transition-delay: 1s;
+    animation-name: animacao-button;
+    animation-duration: 4s;
+    width: 100%;
+    max-width: 100px;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 150px;
+}
+
+.btn {
+    width: 100px;
+    opacity: 0.8;
+}
+
+.btn:hover {
+    width: 100px;
+    opacity: 0,5;
+    border-color: rgb(255, 167, 38);;
 }

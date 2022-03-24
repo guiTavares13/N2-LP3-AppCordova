@@ -1,0 +1,14 @@
+
+body {
+    background-color: rgb(35, 77, 103);
+    align-items: center;
+}
+
+.imagem {
+    height: 70vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+

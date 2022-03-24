@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="pt-br">
     <head>
         <meta charset="utf-8">
         <meta name="format-detection" content="telephone=no">
@@ -16,53 +16,44 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
         
-        <link rel="stylesheet" href="css/index.css">
         <link rel="stylesheet" href="css/estilo.css">
         
         <title>Hello</title>
     </head>
     <body>
-        
-        <div class="navbar navbar-fixed-top navbar-default">
-            <div class="container">
 
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="barra-navegacao">
-                        <span class="sr-only">alternar navegação</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a href="index.html" class="navbar-brand">MyApp</a>                        
-                </div>
+        <script type="text/javascript">
 
-                <div class="collapse navbar-collapse" id="barra-navegacao">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="">Home</a></li>
-                        <li><a href="isstracker.html">Teste ISS Tracker</a></li>
-                        <li class="divisor" role="separator"></li>
-                        <li><a href="">Entrar</a></li>
-                        <li><a href="">Inscrever-se</a></li>
-                    </ul>
-                </div>
+            function displayButton() {
+                    var exibeGif=setTimeout("exibir()",9000);// it will Delay for 3 seconds
+                }
+    
+            function exibir() {
+                setTimeout(() => {
+                    window.DelayNode()
+                }, 6000);
+                
+            }
+    
+        </script>
 
+
+        <div  id="home-animacao">
+            <div class="texto-capa">
+                <h1>Info Espacial</h1>
             </div>
         </div>
 
-        <div class="capa">
-            <div class="texto-capa">
-                <h1>App Cordova - Frontend</h1>
-                <h3>Linguagem de Programação III</h3>
-            </div>
+        <div id="subtitulo-animacao" class="subtitulo">
+            <h3>Seu app de consultas</br>interestelares</h3>
+        </div>
+
+        <div id="icon-animacao">
+            <img src="img/rocket_icon.svg" alt="Icon Rocket"/>
         </div>
             
-        <div class="integrantes">
-            <h3>Integrantes</h3>
-            <ul>
-                <li>Felipe Kevin - 081190037</li>
-                <li>Guilherme Tavares - 081190035</li>
-                <li>Guilherme Brito - 081190018</li>
-                <li>Roger Kenichi - 081190026</li>
-            </ul>
+        <div id="button-initial">
+            <button   onclick="javascript:window.location.assign('menuScreen.html');" href="menuScreen.html" type="button" class="btn btn-outline-secondary">Iniciar</button>
         </div>
     </body>
 </html>
